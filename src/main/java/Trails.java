@@ -33,7 +33,7 @@ public class Trails {
         Random random = new Random();
         Stopwatch timer;
         System.out.println("Alphabet Size: "+alphabetSize+ "\t\tAlphabet: "+alphabet);
-        System.out.println("prep		N		AvgTimeBrute		AvgTimeKMP		AvgBrute		AvgKMP		AvgKMPCompare		AvgKMPConstruct");
+        System.out.println("prep		N		AvgTimeBrute		AvgTimeKMP		AvgBrute		AvgKMP");
         String text = "";
         for(int n = 14; n <= 21; n++){
             // Prep: variable init + text generation
@@ -48,7 +48,6 @@ public class Trails {
             float avgTimeBrute = 0;
 
             int avgComparisonsKMP = 0;
-            int avgCompArrayConstruct = 0;
             float avgTimeKMP = 0;
 
             System.out.print(timer.elapsedTime() + "		");
@@ -59,22 +58,20 @@ public class Trails {
                 timer = new Stopwatch();
                 BruteForceSearch.search(text, pattern);
                 avgTimeBrute += timer.elapsedTime();
-                avgComparisonsBrute += BruteForceSearch.comparisons;
+                avgComparisonsBrute += BruteForceSearch.numInspections;
 
 
                 timer = new Stopwatch();
                 KMP kmp = new KMP(pattern);
                 kmp.search(text);
                 avgTimeKMP += timer.elapsedTime();
-                avgComparisonsKMP += kmp.comparisons;
-                avgCompArrayConstruct += kmp.numSetDFA;
+                avgComparisonsKMP += kmp.numInspections;
             }
             avgComparisonsBrute /= NUM_TRAILS;
             avgTimeBrute /= NUM_TRAILS;
             avgComparisonsKMP /= NUM_TRAILS;
-            avgCompArrayConstruct /= NUM_TRAILS;
             avgTimeKMP /= NUM_TRAILS;
-            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 100000.0 + "				" + Math.round(avgTimeKMP * 100000.0)/ 100000.0 + "			" + avgComparisonsBrute  + "			" + (avgComparisonsKMP+avgCompArrayConstruct) + "		" + avgComparisonsKMP + "				" + avgCompArrayConstruct);
+            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 100000.0 + "				" + Math.round(avgTimeKMP * 100000.0)/ 100000.0 + "			" + avgComparisonsBrute  + "			" + avgComparisonsKMP);
             System.out.println();
         }
     }

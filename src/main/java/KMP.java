@@ -3,42 +3,40 @@ package main.java;
 public class KMP {
     private String pat;
     private int[][] dfa;
-    public int numSetDFA;
-    public int comparisons;
+    public int numInspections;
 
     public KMP(String pat) {
         // Build DFA from pattern.
-        numSetDFA = 0;
         this.pat = pat;
         int M = pat.length();
         int R = 256; // Why 256? Num possible Characters. If using HashSet of arrays less space to look up chars
         dfa = new int[R][M];
-        dfa[pat.charAt(0)][0] = 1;
-        numSetDFA = 1;
+        dfa[inspect(pat, 0)][0] = 1;
         for (int X = 0, j = 1; j < M; j++) {  // Compute dfa[][j].
             for (int c = 0; c < R; c++) {
                 dfa[c][j] = dfa[c][X];
-                numSetDFA++;
             }
             // Copy mismatch cases.
-            dfa[pat.charAt(j)][j] = j + 1;         // Set match case.
-            numSetDFA++;
-            X = dfa[pat.charAt(j)][X];           // Update restart state.
+            dfa[inspect(pat, j)][j] = j + 1;         // Set match case.
+            X = dfa[inspect(pat, j)][X];           // Update restart state.
         }
     }
 
     public int search(String txt) {  // Simulate operation of DFA on txt.
-        comparisons = 0;
         int i, j, N = txt.length(), M = pat.length();
         for (i = 0, j = 0; i < N && j < M; i++) {
-            j = dfa[txt.charAt(i)][j];
-            comparisons++;
+            j = dfa[inspect(txt, i)][j];
         }
         if (j == M) {
             return i - M;  // found (hit end of pattern)
         } else {
             return N;      // not found (hit end of text)
         }
+    }
+
+    private char inspect(String s, int idx) {
+        numInspections++;
+        return s.charAt(idx);
     }
 
     public static void main(String[] args) {
