@@ -1,0 +1,1 @@
+To run this repository just run trials main. It takes about 30 minutes to run. It will give you the worst and average times and inspections.
