@@ -6,7 +6,7 @@ import java.util.Random;
 import static main.java.GFG.deBruijn;
 
 public class Trails {
-    static int NUM_TRAILS = 100;
+    static int NUM_TRAILS = 1000;
 
     public static void main(String[] args) {
         // Binary Alphabet
@@ -33,7 +33,7 @@ public class Trails {
         Random random = new Random();
         Stopwatch timer;
         System.out.println("Alphabet Size: "+alphabetSize+ "\t\tAlphabet: "+alphabet);
-        System.out.println("prep		N		AvgTimeBrute		AvgTimeKMP		AvgBrute		AvgKMP		AvgKMPCompare		AvgKMPConstruct");
+        System.out.println("prep		N		AvgTimeBrute		AvgTimeKMP		AvgCompBrute		AvgCompKMP		WorstCompBrute      WorstCompKMP");
         String text = "";
         for(int n = 14; n <= 21; n++){
             // Prep: variable init + text generation
@@ -46,35 +46,36 @@ public class Trails {
 
             int avgComparisonsBrute = 0;
             float avgTimeBrute = 0;
+            int worstComparisonsBrute = 0;
 
             int avgComparisonsKMP = 0;
-            int avgCompArrayConstruct = 0;
             float avgTimeKMP = 0;
+            int worstComparisonsKMP = 0;
 
             System.out.print(timer.elapsedTime() + "		");
 
             // run trails on text
-            for(int i = 0; i <= NUM_TRAILS; i++){
-                pattern = generateString(random.nextInt((int) Math.floor((double) n/2))+ (int) Math.ceil((double) n/2), alphabetSize, alphabet);
+            for(int i = 0; i < NUM_TRAILS; i++){
+                pattern = generateString(random.nextInt(n/2) + n/3, alphabetSize, alphabet);
                 timer = new Stopwatch();
                 BruteForceSearch.search(text, pattern);
                 avgTimeBrute += timer.elapsedTime();
-                avgComparisonsBrute += BruteForceSearch.comparisons;
+                avgComparisonsBrute += BruteForceSearch.numInspections;
+                worstComparisonsBrute = Math.max(worstComparisonsBrute, BruteForceSearch.numInspections);
 
 
                 timer = new Stopwatch();
                 KMP kmp = new KMP(pattern);
                 kmp.search(text);
                 avgTimeKMP += timer.elapsedTime();
-                avgComparisonsKMP += kmp.comparisons;
-                avgCompArrayConstruct += kmp.numSetDFA;
+                avgComparisonsKMP += kmp.numInspections;
+                worstComparisonsKMP = Math.max(worstComparisonsKMP, kmp.numInspections);
             }
             avgComparisonsBrute /= NUM_TRAILS;
             avgTimeBrute /= NUM_TRAILS;
             avgComparisonsKMP /= NUM_TRAILS;
-            avgCompArrayConstruct /= NUM_TRAILS;
             avgTimeKMP /= NUM_TRAILS;
-            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 100000.0 + "				" + Math.round(avgTimeKMP * 100000.0)/ 100000.0 + "			" + avgComparisonsBrute  + "			" + (avgComparisonsKMP+avgCompArrayConstruct) + "		" + avgComparisonsKMP + "				" + avgCompArrayConstruct);
+            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 1000000.0 + "				" + Math.round(avgTimeKMP * 1000000.0)/ 1000000.0 + "			" + Math.abs(avgComparisonsBrute)  + "				" + avgComparisonsKMP + "				" + worstComparisonsBrute + "				" + worstComparisonsKMP);
             System.out.println();
         }
     }
