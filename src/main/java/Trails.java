@@ -6,7 +6,7 @@ import java.util.Random;
 import static main.java.GFG.deBruijn;
 
 public class Trails {
-    static int NUM_TRAILS = 100;
+    static int NUM_TRAILS = 1000;
 
     public static void main(String[] args) {
         // Binary Alphabet
@@ -55,8 +55,8 @@ public class Trails {
             System.out.print(timer.elapsedTime() + "		");
 
             // run trails on text
-            for(int i = 0; i <= NUM_TRAILS; i++){
-                pattern = generateString(random.nextInt((int) Math.floor((double) n/2))+ (int) Math.ceil((double) n/2), alphabetSize, alphabet);
+            for(int i = 0; i < NUM_TRAILS; i++){
+                pattern = generateString(random.nextInt(n/2) + n/3, alphabetSize, alphabet);
                 timer = new Stopwatch();
                 BruteForceSearch.search(text, pattern);
                 avgTimeBrute += timer.elapsedTime();
@@ -75,7 +75,7 @@ public class Trails {
             avgTimeBrute /= NUM_TRAILS;
             avgComparisonsKMP /= NUM_TRAILS;
             avgTimeKMP /= NUM_TRAILS;
-            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 100000.0 + "				" + Math.round(avgTimeKMP * 100000.0)/ 100000.0 + "			" + avgComparisonsBrute  + "				" + avgComparisonsKMP + "			" + worstComparisonsBrute + "				" + worstComparisonsKMP);
+            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 1000000.0 + "				" + Math.round(avgTimeKMP * 1000000.0)/ 1000000.0 + "			" + Math.abs(avgComparisonsBrute)  + "				" + avgComparisonsKMP + "				" + worstComparisonsBrute + "				" + worstComparisonsKMP);
             System.out.println();
         }
     }
