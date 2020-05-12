@@ -2,7 +2,7 @@ package main.java;
 
 public class KMP {
     private String pat;
-    private int[][] dfa;
+    public int[][] dfa;
     public int numInspections;
 
     public KMP(String pat) {
@@ -40,9 +40,15 @@ public class KMP {
     }
 
     public static void main(String[] args) {
-        String pat = "bro";
+        String pat = "ababac";
         String txt = "hellohibrodudethinghumananimal";
         KMP kmp = new KMP(pat);
+        for(int i = 0; i < pat.length(); i++){
+            for(int j = 0; j < kmp.dfa[0].length; j++){
+                System.out.print(kmp.dfa[pat.charAt(i)][j] + " ");
+            }
+            System.out.println();
+        }
         System.out.println("text:    " + txt);
         int offset = kmp.search(txt);
         System.out.print("pattern: ");
