@@ -1,19 +1,17 @@
 package main.java;
-import javafx.scene.paint.Stop;
 
 import java.util.Random;
 
-import static main.java.GFG.deBruijn;
 
-public class Trails {
+public class Trials {
     static int NUM_TRAILS = 1000;
 
     public static void main(String[] args) {
-        // Binary Alphabet
-        runTrailForAlphabet(2, "01");
-        System.out.println();
         // ACTG Alphabet
         runTrailForAlphabet(4, "actg");
+        System.out.println();
+        // Binary Alphabet
+        runTrailForAlphabet(2, "01");
         System.out.println();
         // Full Alphabet
         runTrailForAlphabet(26, "abcdefghijklmnopqrstuvwxyz");
@@ -44,13 +42,13 @@ public class Trails {
             // text = deBruijn(n-1, 2, "01"); - StackOverflow
             String pattern = "";
 
-            int avgComparisonsBrute = 0;
+            long avgComparisonsBrute = 0;
             float avgTimeBrute = 0;
-            int worstComparisonsBrute = 0;
+            long worstComparisonsBrute = 0;
 
-            int avgComparisonsKMP = 0;
+            long avgComparisonsKMP = 0;
             float avgTimeKMP = 0;
-            int worstComparisonsKMP = 0;
+            long worstComparisonsKMP = 0;
 
             System.out.print(timer.elapsedTime() + "		");
 
@@ -75,7 +73,7 @@ public class Trails {
             avgTimeBrute /= NUM_TRAILS;
             avgComparisonsKMP /= NUM_TRAILS;
             avgTimeKMP /= NUM_TRAILS;
-            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 1000000.0 + "				" + Math.round(avgTimeKMP * 1000000.0)/ 1000000.0 + "			" + Math.abs(avgComparisonsBrute)  + "				" + avgComparisonsKMP + "				" + worstComparisonsBrute + "				" + worstComparisonsKMP);
+            System.out.print(n + "		" + Math.round(avgTimeBrute * 1000000.0) / 1000000.0 + "				" + Math.round(avgTimeKMP * 1000000.0)/ 1000000.0 + "			" + avgComparisonsBrute  + "				" + avgComparisonsKMP + "				" + worstComparisonsBrute + "				" + worstComparisonsKMP);
             System.out.println();
         }
     }
